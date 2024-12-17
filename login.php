@@ -1,8 +1,23 @@
+
+<?php
+include('db.php'); 
+if($_SERVER['REQUEST_METHOD']=="POST")
+{
+    $mail=htmlspecialchars($_POST['email']);
+    $password=htmlspecialchars($_POST['password']);
+    $userWidthMail="SELECT * FROM USER where email=?";
+    $stmt=mysqli_prepare($conn,$userWidthMail);
+    mysqli_stmt_bind_param($stmt,"s",$mail);
+    mysqli_stmt_execute($stmt);
+    $result=mysqli_stmt_get_result($stmt);
+    while($row =mysqli_fetch_assoc())
+
+}
+
+?>
+
 <!DOCTYPE html>
-<!--
-	Resto by GetTemplates.co
-	URL: https://gettemplates.co
--->
+
 <html lang="en">
 
 <head>
@@ -62,7 +77,7 @@
                             </div>
                            
                             <div class="col-md-12 form-group">
-                                <input type="password" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="password">
+                                <input type="password" class="form-control" id="phoneNumber" name="password" placeholder="password">
                             </div>
                             <div class="col-md-12 text-center">
                                 <button class="btn btn-primary btn-shadow btn-lg" type="submit" name="submit">Login</button>

@@ -1,8 +1,24 @@
+<?php
+ include ('db.php');
+ $messageSuccee="";
+ if($_SERVER['REQUEST_METHOD']=="POST")
+ {
+    $firstName=htmlspecialchars($_POST['firstName']);
+    $LastName=htmlspecialchars($_POST['LastName']);
+    $email=htmlspecialchars($_POST['email']);
+    $phoneNumber=htmlspecialchars($_POST['phoneNumber']);
+    $adresse=htmlspecialchars($_POST['adresse']);
+    $password=htmlspecialchars($_POST['password']);
+    $id_role = 1;
+    $insertIntoUser="INSERT INTO USER(nom , pernom , email, password, telephone,adresse,id_role) VALUES (?,?,?,?,?,?,?)";
+    $stmt=mysqli_prepare($conn,$insertIntoUser);
+    mysqli_stmt_bind_param($stmt,"ssssssi",$firstName,$LastName,$email,$password,$phoneNumber,$adresse,$id_role);
+    mysqli_stmt_execute($stmt);
+    $messageSuccee="Votre insription fait avec succee";
+ }
+?>
 <!DOCTYPE html>
-<!--
-	Resto by GetTemplates.co
-	URL: https://gettemplates.co
--->
+
 <html lang="en">
 
 <head>
@@ -12,6 +28,7 @@
     <title>Resto - Restaurant Bootstrap 4 Template by GetTemplates.co</title>
     <meta name="description" content="Resto">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+   
 
     <!-- External CSS -->
     <link rel="stylesheet" href="vendor/bootstrap/bootstrap.min.css">
@@ -57,26 +74,31 @@
                     <form method="post" name="contact-us" action="">
                         <div class="row">
                             <div class="col-md-12 form-group">
-                                <input type="text" class="form-control" id="name" name="name" placeholder="first Name">
+                                <input type="text" class="form-control" id="name" name="firstName" placeholder="first Name" require>
                             </div>
                             <div class="col-md-12 form-group">
-                                <input type="text" class="form-control" id="name" name="name" placeholder="Last Name">
+                                <input type="text" class="form-control" id="name" name="LastName" placeholder="Last Name" require>
                             </div>
                             <div class="col-md-12 form-group">
-                                <input type="text" class="form-control" id="email" name="email" placeholder="Email">
+                                <input type="text" class="form-control" id="email" name="email" placeholder="Email" require>
                             </div>
                             <div class="col-md-12 form-group">
-                                <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="Phone">
+                                <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="Phone" require>
                             </div>
                             <div class="col-md-12 form-group">
-                                <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="adresse">
+                                <input type="text" class="form-control" id="phoneNumber" name="adresse" placeholder="adresse" require>
                             </div>
                             <div class="col-md-12 form-group">
-                                <input type="password" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="password">
+                                <input type="password" class="form-control" id="phoneNumber" name="password" placeholder="password" require>
+                            </div>
+                            <div class="col-md-12 text-center">
+                               <span style="color:aquamarine;"><?php $messageSuccee ?></span>
                             </div>
                             <div class="col-md-12 text-center">
                                 <button class="btn btn-primary btn-shadow btn-lg" type="submit" name="submit">Sing Up</button>
                             </div>
+                            
+
                             
                         </div>
                     </form>
