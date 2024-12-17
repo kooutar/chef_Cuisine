@@ -48,14 +48,16 @@ if (!$conn) {
    PRIMARY KEY (id_menu, id_user)
   );
   ";
-  $addpriceToplat="ALTER TABLE plate ADD prix DECIMAL(10,2) NOT NULL;";
-  // $addpathImageToplat="ALTER TABLE plate ADD pathImage varchar(50) NOT NULL;";
-  $addstatusToresevation="ALTER TABLE reservation ADD status ENUM('en attente','accepter','refuser') DEFAULT 'en attente'";
-  // mysqli_query($conn,$addpriceToplat);
-  // // mysqli_query($conn,$addpathImageToplat);
-  // mysqli_query($conn,$addstatusToresevation);
+  $createTableRole="
+    CREATE TABLE IF NOT EXISTS Role(
+    id_role int(11) AUTO_INCREMENT PRIMARY KEY,
+    titre varchar(20) NOT NULL
+    );
+  ";
+ 
   mysqli_query($conn,$createTableUser);
   mysqli_query($conn,$createTableMenu);
   mysqli_query($conn,$createTablePlat);
   mysqli_query($conn,$createTableReservation);
+  mysqli_query($conn,$createTableRole);
 ?>
