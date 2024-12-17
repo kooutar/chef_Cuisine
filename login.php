@@ -10,7 +10,7 @@ if($_SERVER['REQUEST_METHOD']=="POST")
     mysqli_stmt_bind_param($stmt,"s",$mail);
     mysqli_stmt_execute($stmt);
     $result=mysqli_stmt_get_result($stmt);
-    while($row =mysqli_fetch_assoc())
+    // while($row =mysqli_fetch_assoc())
 
 }
 
