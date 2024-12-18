@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.2.0/remixicon.css">
     <style>
         /* Responsive pour les cartes */
 #partieStatistique {
@@ -13,18 +14,7 @@
     gap: 20px;
 }
 
-/* Sidebar responsive */
-/* #partiegestionDash {
-    display: grid;
-    flex-direction: column;
-} */
 
-@media (max-width: 768px) {
-    /* #partiegestionDash {
-        flex-direction: row;
-        flex-wrap: wrap;
-    } */
-}
 
 /* Table responsive */
 #tableClients {
@@ -52,6 +42,21 @@
 
     </style>
 </head>
+<?php 
+ include('db.php');
+ if(isset($_POST['ajoutPlat'])){
+      $namePlat=trim(htmlspecialchars($_POST['nomPlat']));
+      $pathImage=$_FILES['pathImage']['name'];
+      $descriptionPlat=trim(htmlspecialchars($_POST['descriptionPlat']));
+      $categoriePlat=htmlspecialchars($_POST['categoriePlat']);
+      $prixPlat=trim(htmlspecialchars($_POST['prixPlat']));
+     $requteInsertPlat="INSERT INTO  plate(nomPlat,pathImage,description,categorie,prix) VALUES(?,?,?,?,?);";
+     $stmt=mysqli_prepare($conn,$requteInsertPlat);
+     mysqli_stmt_bind_param($stmt,"ssssd",$namePlat,$pathImage,$descriptionPlat,$categoriePlat,$prixPlat);
+     mysqli_stmt_execute($stmt);
+
+ }
+?>
 <body class="bg-gray-100 font-sans">
     <div class="flex flex-col">
         <!-- Partie Statistique -->
@@ -135,14 +140,14 @@
             </h2>
 
             <!-- Formulaire -->
-            <form action="/ajouter-plat" method="POST" enctype="multipart/form-data" class="space-y-6">
+            <form action="" method="POST" enctype="multipart/form-data" class="space-y-6">
                 <!-- Nom du Plat -->
                 <div>
                     <label for="nom" class="block text-sm font-medium text-gray-600 mb-2">Nom du Plat</label>
                     <input 
                         type="text" 
                         id="nom" 
-                        name="nom" 
+                        name="nomPlat" 
                         placeholder="Entrez le nom du plat"
                         class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                         required
@@ -155,7 +160,7 @@
                     <input 
                         type="file" 
                         id="nom" 
-                        name="nom" 
+                        name="pathImage" 
                         placeholder="Entrez le nom du plat"
                         class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                         required
@@ -167,7 +172,7 @@
                     <label for="description" class="block text-sm font-medium text-gray-600 mb-2">Description</label>
                     <textarea 
                         id="description" 
-                        name="description" 
+                        name="descriptionPlat" 
                         rows="4" 
                         placeholder="Ajoutez une description du plat"
                         class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
@@ -180,7 +185,7 @@
                     <label for="categorie" class="block text-sm font-medium text-gray-600 mb-2">Catégorie</label>
                     <select 
                         id="categorie" 
-                        name="categorie"
+                        name="categoriePlat"
                         class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                         required
                     >
@@ -197,7 +202,7 @@
                     <input 
                         type="number" 
                         id="prix" 
-                        name="prix" 
+                        name="prixPlat" 
                         placeholder="Entrez le prix en euros"
                         min="0" 
                         step="0.01"
@@ -210,6 +215,7 @@
                 <div class="text-center">
                     <button 
                         type="submit" 
+                        name="ajoutPlat"
                         class="w-full md:w-1/2 bg-[#e38e10] text-white font-semibold py-2 rounded-lg hover:bg-[#d1902f] transition duration-300"
                     >
                         Ajouter le Plat
@@ -307,7 +313,96 @@
                     </tbody>
                 </table>
             </div>
+           
+            <div id="formMenu" class="section hidden">
+            <div class="flex flex-col items-center justify-center min-h-screen p-6">
+        <!-- Conteneur principal -->
+        <div class="w-full max-w-4xl bg-white shadow-lg rounded-lg p-8">
+            <!-- Titre -->
+            <h2 class="text-2xl font-semibold text-gray-700 mb-6 text-center uppercase tracking-wider">
+                Ajouter un Menu
+            </h2>
+
+            <!-- Formulaire -->
+            <form action="" method="POST" enctype="multipart/form-data" class="space-y-6">
+                <!-- Nom du Plat -->
+                <div>
+                    <label for="nom" class="block text-sm font-medium text-gray-600 mb-2">Titre Menu</label>
+                    <input 
+                        type="text" 
+                        id="nom" 
+                        name="titre" 
+                        placeholder="Entrez le nom du plat"
+                        class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        required
+                    >
+                </div>
+
+                <!-- upode image -->
+                <div>
+                    <label for="nom" class="block text-sm font-medium text-gray-600 mb-2">image du menu</label>
+                    <input 
+                        type="file" 
+                        id="nom" 
+                        name="image" 
+                        placeholder="Entrez le nom du plat"
+                        class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        required
+                    >
+                </div>
+
+                <!-- Description -->
+                <div>
+                    <label for="description" class="block text-sm font-medium text-gray-600 mb-2">Description</label>
+                    <textarea 
+                        id="description" 
+                        name="description" 
+                        rows="4" 
+                        placeholder="Ajoutez une description du plat"
+                        class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                        required
+                    ></textarea>
+                </div>
+
+                <!-- Catégorie -->
+                 
+                 <div>
+                    <label for="categorie" class="block text-sm font-medium text-gray-600 mb-2">plat</label>
+                    <select 
+                        id="categorie" 
+                        name="categorie"
+                        class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        required
+                    >
+                        <option value="" disabled selected>Choisissez une catégorie</option>
+                        <option value="plat_principal">Plat Principal</option>
+                        <option value="dessert">Dessert</option>
+                        <option value="entree">Entrée</option>
+                    </select>
+                </div> 
+                <div id="divPourLesNouveauxChamps">
+
+                </div>
+                
+           <div class="flex justify-end">
+            <a id="bteFormDynamique" class="cursor-pointer"><i class="ri-file-add-fill"></i></a>
+
+           </div>
+
+                <!-- Bouton Ajouter -->
+                <div class="text-center">
+                    <button 
+                        type="submit" 
+                        class="w-full md:w-1/2 bg-[#e38e10] text-white font-semibold py-2 rounded-lg hover:bg-[#d1902f] transition duration-300"
+                    >
+                        Ajouter le Menu
+                    </button>
+                </div>
+            </form>
+        </div>
+       </div>
             </div>
+        </div>
         </section>
     
    
@@ -368,6 +463,37 @@
                 section.classList.remove('hidden')
             }
             })
+
+        })
+
+        document.querySelector('#bteAjoutMenu').addEventListener('click',()=>{
+            AllSection.forEach(section=>{
+            if(section.id!="formMenu")
+            {
+                section.classList.add('hidden')
+            }else{
+                section.classList.remove('hidden')
+            }
+            })
+
+        })
+        document.querySelector('#bteFormDynamique').addEventListener('click',()=>{
+            document.querySelector('#divPourLesNouveauxChamps').innerHTML+=`
+              <div>
+                    <label for="categorie" class="block text-sm font-medium text-gray-600 mb-2">plat</label>
+                    <select 
+                        id="categorie" 
+                        name="categorie"
+                        class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        required
+                    >
+                        <option value="" disabled selected>Choisissez une catégorie</option>
+                        <option value="plat_principal">Plat Principal</option>
+                        <option value="dessert">Dessert</option>
+                        <option value="entree">Entrée</option>
+                    </select>
+                </div> 
+            `
 
         })
         
