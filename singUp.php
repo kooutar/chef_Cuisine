@@ -3,16 +3,19 @@
  $messageSuccee="";
  if($_SERVER['REQUEST_METHOD']=="POST")
  {
-    $firstName=htmlspecialchars($_POST['firstName']);
-    $LastName=htmlspecialchars($_POST['LastName']);
-    $email=htmlspecialchars($_POST['email']);
-    $phoneNumber=htmlspecialchars($_POST['phoneNumber']);
-    $adresse=htmlspecialchars($_POST['adresse']);
-    $password=htmlspecialchars($_POST['password']);
+    $firstName=trim(htmlspecialchars($_POST['firstName']));
+    $LastName=trim(htmlspecialchars($_POST['LastName']));
+    $email=trim(htmlspecialchars($_POST['email']));
+    $phoneNumber=trim(htmlspecialchars($_POST['phoneNumber']));
+    $adresse=trim(htmlspecialchars($_POST['adresse']));
+    $password=trim(htmlspecialchars($_POST['password']));
     $id_role = 1;
+    echo $password;
+    $passwordHashee=password_hash($password,PASSWORD_DEFAULT);
+    echo $passwordHashee;
     $insertIntoUser="INSERT INTO USER(nom , pernom , email, password, telephone,adresse,id_role) VALUES (?,?,?,?,?,?,?)";
     $stmt=mysqli_prepare($conn,$insertIntoUser);
-    mysqli_stmt_bind_param($stmt,"ssssssi",$firstName,$LastName,$email,$password,$phoneNumber,$adresse,$id_role);
+    mysqli_stmt_bind_param($stmt,"ssssssi",$firstName,$LastName,$email,$passwordHashee,$phoneNumber,$adresse,$id_role);
     mysqli_stmt_execute($stmt);
     $messageSuccee="Votre insription fait avec succee";
  }

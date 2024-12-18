@@ -1,18 +1,29 @@
 
 <?php
 include('db.php'); 
-if($_SERVER['REQUEST_METHOD']=="POST")
-{
-    $mail=htmlspecialchars($_POST['email']);
-    $password=htmlspecialchars($_POST['password']);
-    $userWidthMail="SELECT * FROM USER where email=?";
-    $stmt=mysqli_prepare($conn,$userWidthMail);
-    mysqli_stmt_bind_param($stmt,"s",$mail);
+if ($_SERVER['REQUEST_METHOD'] == "POST") {
+    $mail =trim(htmlspecialchars($_POST['email']));
+    $password = trim(htmlspecialchars($_POST['password']));
+    
+    $userWithMail = "SELECT password FROM USER WHERE email=?";
+    $stmt = mysqli_prepare($conn, $userWithMail);
+    mysqli_stmt_bind_param($stmt, "s", $mail);
     mysqli_stmt_execute($stmt);
-    $result=mysqli_stmt_get_result($stmt);
-    // while($row =mysqli_fetch_assoc())
+    $result = mysqli_stmt_get_result($stmt);
 
+    if (mysqli_num_rows($result) > 0) {
+        $row = mysqli_fetch_assoc($result);
+        
+        if (password_verify($password, $row['password'])) {
+            header('Location: pageClient.php');
+        } else {
+            echo "Mot de passe invalide";
+        }
+    } else {
+        echo "L'email n'existe pas";
+    }
 }
+
 
 ?>
 
