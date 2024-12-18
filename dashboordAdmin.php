@@ -58,7 +58,15 @@
         <main class="p-6">
             <div id="partieStatistique" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 md:pl-12">
                 <div id="statiqueCleint" class="w-full sm:w-40 h-20 bg-green-500 text-white rounded-lg shadow-md flex justify-center items-center">
-                    <p class="font-medium text-sm uppercase tracking-wider">0 client</p>
+                    <p class="font-medium text-sm uppercase tracking-wider">
+                        <?php
+                         include('db.php');
+                          $requetAllClient="SELECT count(*) FROM user;";
+                          $nbrClient=mysqli_query($conn,$requetAllClient);
+                          $result=mysqli_fetch_assoc($nbrClient);
+                          echo $result['count(*)'];
+                        ?> 
+                        client</p>
                 </div>
                 <div id="statiqueReservationAccepter" class="w-full sm:w-40 h-20 p-6 bg-yellow-500 text-white rounded-lg shadow-md flex justify-center items-center">
                     <p class="font-medium text-sm uppercase tracking-wider">0 Reservation acceptée</p>

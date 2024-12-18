@@ -1,5 +1,6 @@
 
 <?php
+session_start();
 include('db.php'); 
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $mail =trim(htmlspecialchars($_POST['email']));
@@ -14,6 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         if (password_verify($password, $row['password'])) {
             if($row['id_role']==1)
             {
+                $_SESSION["id_user"]=$row['id_user'];
                 header('Location: pageClient.php');
             }else{
                 header('Location: dashboordAdmin.php'); 

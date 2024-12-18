@@ -10,7 +10,7 @@
   .btn {
     padding: 10px;
     margin-bottom: 8px;
-    background-color:  #f34949;
+    background-color: #f34949;
     color: #fff;
     border: none;
     border-radius: 6px;
@@ -29,7 +29,23 @@
     <section class="md:m-6 p-2" style="background-color:whitesmoke;">
      <nav class="flex justify-around">
       <img src="img/logo.png" alt="" srcset="" class="w-16">
-      <p class="mb-2 text-xl font-medium leading-tight">kaoutar</p>
+      <p class="mb-2 text-xl font-medium leading-tight">
+      <?php 
+      session_start();
+       include('db.php');
+        $requetRecupereName="SELECT * FROM USER where id_user=?";
+        $stmt=mysqli_prepare($conn,$requetRecupereName);
+        mysqli_stmt_bind_param($stmt,"i",$_SESSION["id_user"]);
+        mysqli_stmt_execute($stmt);
+        $result=mysqli_stmt_get_result($stmt);
+        if(mysqli_num_rows($result)>0)
+        {
+             $row=mysqli_fetch_assoc($result);
+             echo $row['nom']; 
+        }
+
+      ?>
+      </p>
      </nav>
      <main class="flex flex-col p-6">
         <div class="flex justify-center">
@@ -57,7 +73,7 @@
         lead-in to additional content. This content is a little bit
         longer.
       </p>
-      <button id="bteEditMenu"class="btn w-full">Modifier menu</button>
+      <button id="bteEditMenu"class="btn w-full">savoir plus</button>
     </div>
   </div>
 
@@ -76,7 +92,7 @@
         lead-in to additional content. This content is a little bit
         longer.
       </p>
-      <button id="bteEditMenu"class="btn w-full">Modifier menu</button>
+      <button id="bteEditMenu"class="btn w-full">savoir plus</button>
     </div>
   </div>
 
@@ -95,7 +111,7 @@
         lead-in to additional content. This content is a little bit
         longer.
       </p>
-      <button id="bteEditMenu"class="btn w-full">Modifier menu</button>
+      <button id="bteEditMenu"class="btn w-full">savoir plus</button>
     </div>
   </div>
 
@@ -114,7 +130,7 @@
         lead-in to additional content. This content is a little bit
         longer.
       </p>
-      <button id="bteEditMenu"class="btn w-full">Modifier menu</button>
+      <button id="bteEditMenu"class="btn w-full">savoir plus</button>
     </div>
   </div>
         </div>
