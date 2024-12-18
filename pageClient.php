@@ -6,91 +6,176 @@
     <title>Document</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
+<style>
+  .btn {
+    padding: 10px;
+    margin-bottom: 8px;
+    background-color:  #f34949;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: background-color 0.3s;
+    cursor: pointer;
+    text-align: center;
+}
+
+.btn:hover {
+    background-color: #2c4c76;
+}
+
+</style>
 <body style="background-color:bisque;">
     <section class="md:m-6 p-2" style="background-color:whitesmoke;">
      <nav class="flex justify-around">
       <img src="img/logo.png" alt="" srcset="" class="w-16">
-      <p>kaoutar</p>
+      <p class="mb-2 text-xl font-medium leading-tight">kaoutar</p>
      </nav>
-     <main class="flex flex-col">
+     <main class="flex flex-col p-6">
         <div class="flex justify-center">
-            <h1>Our Menu</h1>
+            <h1 class="mb-2 text-xl font-medium leading-tight">Our Menu</h1>
         </div>
-        <div class="grid grid-cols-2 gap-6 md:grid-cols-4 md:gap-8">
+        <div class=" flex ">
+             <div class="flex w-full justify-between gap-2">
+             <button id="bteRetourMenu"class="btn ">retour menu</button>
+             <button id="bteHidtorique"class="btn">Voir historique</button>
+             </div>
+        </div>
+        <div id="Menu" class="section grid grid-cols-2 gap-6 md:grid-cols-4 md:gap-8">
         <div
-  class="flex flex-col rounded-lg bg-white text-surface shadow-secondary-1 dark:bg-surface-dark dark:text-white md:max-w-xl md:flex-row">
-  <img
-    class="h-96 w-full rounded-t-lg object-cover md:h-auto md:w-48 md:!rounded-none md:!rounded-s-lg"
-    src="img/salmon-zucchini.jpg"
-    alt="" />
-  <div class="flex flex-col justify-start p-6">
-    <h5 class="mb-2 text-xl font-medium">Card title</h5>
-    <p class="mb-4 text-base">
-      This is a wider card with supporting text below as a natural lead-in
-      to additional content. This content is a little bit longer.
-    </p>
-    <p class="text-xs text-surface/75 dark:text-neutral-300">
-      Last updated 3 mins ago
-    </p>
+    class="flex flex-col rounded-lg bg-white text-surface shadow-secondary-1 dark:bg-surface-dark dark:text-white sm:shrink-0 sm:grow sm:basis-0 sm:rounded-e-none">
+    <a href="#!">
+      <img
+        class="rounded-t-lg sm:rounded-tr-none"
+        src="https://tecdn.b-cdn.net/img/new/standard/city/041.webp"
+        alt="Hollywood Sign on The Hill" />
+    </a>
+    <div class="p-6">
+      <h5 class="mb-2 text-xl font-medium leading-tight">Card title</h5>
+      <p class="mb-4 text-base">
+        This is a wider card with supporting text below as a natural
+        lead-in to additional content. This content is a little bit
+        longer.
+      </p>
+      <button id="bteEditMenu"class="btn w-full">Modifier menu</button>
+    </div>
   </div>
-</div>
 
-<div
-  class="flex flex-col rounded-lg bg-white text-surface shadow-secondary-1 dark:bg-surface-dark dark:text-white md:max-w-xl md:flex-row">
-  <img
-    class="h-96 w-full rounded-t-lg object-cover md:h-auto md:w-48 md:!rounded-none md:!rounded-s-lg"
-    src="img/salmon-zucchini.jpg"
-    alt="" />
-  <div class="flex flex-col justify-start p-6">
-    <h5 class="mb-2 text-xl font-medium">Card title</h5>
-    <p class="mb-4 text-base">
-      This is a wider card with supporting text below as a natural lead-in
-      to additional content. This content is a little bit longer.
-    </p>
-    <p class="text-xs text-surface/75 dark:text-neutral-300">
-      Last updated 3 mins ago
-    </p>
+  <div
+    class="flex flex-col rounded-lg bg-white text-surface shadow-secondary-1 dark:bg-surface-dark dark:text-white sm:shrink-0 sm:grow sm:basis-0 sm:rounded-e-none">
+    <a href="#!">
+      <img
+        class="rounded-t-lg sm:rounded-tr-none"
+        src="https://tecdn.b-cdn.net/img/new/standard/city/041.webp"
+        alt="Hollywood Sign on The Hill" />
+    </a>
+    <div class="p-6">
+      <h5 class="mb-2 text-xl font-medium leading-tight">Card title</h5>
+      <p class="mb-4 text-base">
+        This is a wider card with supporting text below as a natural
+        lead-in to additional content. This content is a little bit
+        longer.
+      </p>
+      <button id="bteEditMenu"class="btn w-full">Modifier menu</button>
+    </div>
   </div>
-</div>
 
-<div
-  class="flex flex-col rounded-lg bg-white text-surface shadow-secondary-1 dark:bg-surface-dark dark:text-white md:max-w-xl md:flex-row">
-  <img
-    class="h-96 w-full rounded-t-lg object-cover md:h-auto md:w-48 md:!rounded-none md:!rounded-s-lg"
-    src="img/salmon-zucchini.jpg"
-    alt="" />
-  <div class="flex flex-col justify-start p-6">
-    <h5 class="mb-2 text-xl font-medium">Card title</h5>
-    <p class="mb-4 text-base">
-      This is a wider card with supporting text below as a natural lead-in
-      to additional content. This content is a little bit longer.
-    </p>
-    <p class="text-xs text-surface/75 dark:text-neutral-300">
-      Last updated 3 mins ago
-    </p>
+  <div
+    class="flex flex-col rounded-lg bg-white text-surface shadow-secondary-1 dark:bg-surface-dark dark:text-white sm:shrink-0 sm:grow sm:basis-0 sm:rounded-e-none">
+    <a href="#!">
+      <img
+        class="rounded-t-lg sm:rounded-tr-none"
+        src="https://tecdn.b-cdn.net/img/new/standard/city/041.webp"
+        alt="Hollywood Sign on The Hill" />
+    </a>
+    <div class="p-6">
+      <h5 class="mb-2 text-xl font-medium leading-tight">Card title</h5>
+      <p class="mb-4 text-base">
+        This is a wider card with supporting text below as a natural
+        lead-in to additional content. This content is a little bit
+        longer.
+      </p>
+      <button id="bteEditMenu"class="btn w-full">Modifier menu</button>
+    </div>
   </div>
-</div>
 
-<div
-  class="flex flex-col rounded-lg bg-white text-surface shadow-secondary-1 dark:bg-surface-dark dark:text-white md:max-w-xl md:flex-row">
-  <img
-    class="h-96 w-full rounded-t-lg object-cover md:h-auto md:w-48 md:!rounded-none md:!rounded-s-lg"
-    src="img/salmon-zucchini.jpg"
-    alt="" />
-  <div class="flex flex-col justify-start p-6">
-    <h5 class="mb-2 text-xl font-medium">Card title</h5>
-    <p class="mb-4 text-base">
-      This is a wider card with supporting text below as a natural lead-in
-      to additional content. This content is a little bit longer.
-    </p>
-    <p class="text-xs text-surface/75 dark:text-neutral-300">
-      Last updated 3 mins ago
-    </p>
+  <div
+    class="flex flex-col rounded-lg bg-white text-surface shadow-secondary-1 dark:bg-surface-dark dark:text-white sm:shrink-0 sm:grow sm:basis-0 sm:rounded-e-none">
+    <a href="#!">
+      <img
+        class="rounded-t-lg sm:rounded-tr-none"
+        src="https://tecdn.b-cdn.net/img/new/standard/city/041.webp"
+        alt="Hollywood Sign on The Hill" />
+    </a>
+    <div class="p-6">
+      <h5 class="mb-2 text-xl font-medium leading-tight">Card title</h5>
+      <p class="mb-4 text-base">
+        This is a wider card with supporting text below as a natural
+        lead-in to additional content. This content is a little bit
+        longer.
+      </p>
+      <button id="bteEditMenu"class="btn w-full">Modifier menu</button>
+    </div>
   </div>
-</div>
+        </div>
+
+
+        <div id="tableHistorique" class="section hidden">
+        <h6 class="font-medium text-lg uppercase tracking-wider mb-4 text-gray-700">Réservation Acceptées</h6>
+                <table id="tableClients" class="table-auto min-w-max w-full bg-gray-50 border border-gray-300 rounded-lg shadow-md">
+                    <thead>
+                        <tr class="bg-gray-200 text-gray-600">
+                            <th class="py-3 px-4 font-medium uppercase">Nom Menu</th>
+                            <th class="py-3 px-4 font-medium uppercase">Mail User</th>
+                            <th class="py-3 px-4 font-medium uppercase">Date de réservation</th>
+                            <th class="py-3 px-4 font-medium uppercase">Heure</th>
+                            <th class="py-3 px-4 font-medium uppercase">Nombre de personnes</th>
+                            <th class="py-3 px-4 font-medium uppercase">Statut</th>
+                            <th class="py-3 px-4 font-medium uppercase">Edit/Suppression</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="hover:bg-gray-100">
+                            <td class="py-3 px-4 text-gray-700">{$client['id_client']}</td>
+                            <td class="py-3 px-4 text-gray-700">{$client['nom']}</td>
+                            <td class="py-3 px-4 text-gray-700">{$client['pernom']}</td>
+                            <td class="py-3 px-4 text-gray-700">{$client['email']}</td>
+                            <td class="py-3 px-4 text-gray-700">{$client['telephone']}</td>
+                            <td class="py-3 px-4 text-gray-700">{$client['adresse']}</td>
+                            <td class="py-3 px-4 text-gray-700">{$client['date_naissance']}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
         </div>
 
      </main>
     </section>
+    <script>
+const allsection=document.querySelectorAll('.section')
+document.querySelector('#bteHidtorique').addEventListener('click',()=>{
+ allsection.forEach(section=>{
+  if(section.id!="tableHistorique")
+ {
+     section.classList.add('hidden');
+ }else{
+  section.classList.remove('hidden');
+ }
+ })
+  
+})
+
+document.querySelector('#bteRetourMenu').addEventListener('click',()=>{
+ allsection.forEach(section=>{
+  if(section.id!="Menu")
+ {
+     section.classList.add('hidden');
+ }else{
+  section.classList.remove('hidden');
+ }
+ })
+  
+})
+    </script>
 </body>
 </html>
