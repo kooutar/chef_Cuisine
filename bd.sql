@@ -1,5 +1,5 @@
 insert into user(nom,pernom,email,password,telephone,adresse,id_role)
-values("chef","mouha","mouha@gmail.com","1111","0626917903","zohour",1);
+values("chef","mouha","mouha@gmail.com","1111","0626917903","zohour",2);
 update user
 set id_role=2
 where id_user=3;

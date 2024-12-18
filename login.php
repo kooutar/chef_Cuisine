@@ -4,18 +4,21 @@ include('db.php');
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $mail =trim(htmlspecialchars($_POST['email']));
     $password = trim(htmlspecialchars($_POST['password']));
-    
-    $userWithMail = "SELECT password FROM USER WHERE email=?";
+    $userWithMail = "SELECT * FROM USER WHERE email=?";
     $stmt = mysqli_prepare($conn, $userWithMail);
     mysqli_stmt_bind_param($stmt, "s", $mail);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
-
     if (mysqli_num_rows($result) > 0) {
         $row = mysqli_fetch_assoc($result);
-        
         if (password_verify($password, $row['password'])) {
-            header('Location: pageClient.php');
+            if($row['id_role']==1)
+            {
+                header('Location: pageClient.php');
+            }else{
+                header('Location: dashboordAdmin.php'); 
+            }
+           
         } else {
             echo "Mot de passe invalide";
         }
