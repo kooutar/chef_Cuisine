@@ -14,8 +14,6 @@
     gap: 20px;
 }
 
-
-
 /* Table responsive */
 #tableClients {
     overflow-x: auto;
@@ -43,20 +41,37 @@
     </style>
 </head>
 <?php 
- include('db.php');
- if(isset($_POST['ajoutPlat'])){
-      $namePlat=trim(htmlspecialchars($_POST['nomPlat']));
-      $pathImage=$_FILES['pathImage']['name'];
-      $descriptionPlat=trim(htmlspecialchars($_POST['descriptionPlat']));
-      $categoriePlat=htmlspecialchars($_POST['categoriePlat']);
-      $prixPlat=trim(htmlspecialchars($_POST['prixPlat']));
-     $requteInsertPlat="INSERT INTO  plate(nomPlat,pathImage,description,categorie,prix) VALUES(?,?,?,?,?);";
-     $stmt=mysqli_prepare($conn,$requteInsertPlat);
-     mysqli_stmt_bind_param($stmt,"ssssd",$namePlat,$pathImage,$descriptionPlat,$categoriePlat,$prixPlat);
-     mysqli_stmt_execute($stmt);
+include('db.php');
 
- }
+if (isset($_POST['ajoutPlat'])) {
+ 
+    $namePlat = trim(htmlspecialchars($_POST['nomPlat']));
+    $descriptionPlat = trim(htmlspecialchars($_POST['descriptionPlat']));
+    $categoriePlat = htmlspecialchars($_POST['categoriePlat']);
+    $prixPlat = trim(htmlspecialchars($_POST['prixPlat'])); 
+    $uploadDir = 'uploads/';//dossier destinatire
+    if (isset($_FILES["pathImage"]) && !empty($_FILES["pathImage"]["name"])) {
+        echo $_FILES["pathImage"]["name"]."  ".basename($_FILES["pathImage"]["name"])."<br>";
+        $newPathImage = $uploadDir . basename($_FILES["pathImage"]["name"]);
+        $arrayExtentionImag=array('png','jpg','jpge','gif','svg');
+        $extention=pathinfo( $newPathImage,PATHINFO_EXTENSION);//retourn extention de image 
+        if(in_array(strtolower($extention),$arrayExtentionImag)){
+            move_uploaded_file($_FILES["pathImage"]["tmp_name"],$newPathImage);
+             $requteAjoutPlat="INSERT INTO plate(nomPlat,pathImage,description,categorie,prix) VALUES(?,?,?,?,?);";
+             $stmt=mysqli_prepare($conn,$requteAjoutPlat);
+             mysqli_stmt_bind_param($stmt,"ssssd",$namePlat,$newPathImage,$descriptionPlat,$categoriePlat,$prixPlat);
+             mysqli_stmt_execute($stmt);
+        }else{
+            echo "c'est pas une image";
+        }
+    } else {
+        echo "Aucun fichier téléchargé.";
+    }
+    // $newPathImage=$uploadDir . basename($_FILES["pathImage"]["name"]);
+    // echo pathinfo( $newPathImage,PATHINFO_EXTENSION);
+}
 ?>
+
 <body class="bg-gray-100 font-sans">
     <div class="flex flex-col">
         <!-- Partie Statistique -->
@@ -375,9 +390,15 @@
                         required
                     >
                         <option value="" disabled selected>Choisissez une catégorie</option>
-                        <option value="plat_principal">Plat Principal</option>
-                        <option value="dessert">Dessert</option>
-                        <option value="entree">Entrée</option>
+                        <?php 
+                          $requetAllPlat="SELECT * FROM plate;";
+                          $result=mysqli_query($conn,$requetAllPlat);
+                          while($row=mysqli_fetch_assoc($result)){
+                            echo "<option value='{$row['nomPlat']}'>{$row['nomPlat']}</option>";
+                          }
+
+                        ?>
+                        
                     </select>
                 </div> 
                 <div id="divPourLesNouveauxChamps">
