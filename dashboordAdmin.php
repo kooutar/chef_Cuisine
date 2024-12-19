@@ -79,13 +79,44 @@ if (isset($_POST['ajoutMenu'])){
     $titreMenu=trim(htmlspecialchars($_POST['titreMenu']));
     $descriptionMenu=trim(htmlspecialchars($_POST['descriptionMenu']));
     $allPlat=$_POST['plat'];
+    $allplatId=$_POST['idPlat'];
+    $tailleId=count($allplatId);
     $taille=count($allPlat);
+    echo $tailleId."<br>"; 
     echo $taille ."<br>";
-    for($i=0;$i<$taille;$i++)
+    for($i=0;$i<$tailleId;$i++)
     {
-           echo $_POST['plat'][$i]." ";
+           echo $_POST['idPlat'][$i]." ";
     }
-    $imageMenu=$_FILES['imageMenu'];
+    // $imageMenu=$_FILES['imageMenu'];
+    $uploadDir = 'uploads/';
+    if (isset($_FILES['imageMenu']) && !empty($_FILES['imageMenu']["name"])) {
+        echo $_FILES['imageMenu']["name"]."  ".basename($_FILES['imageMenu']["name"])."<br>";
+        $newPathImage = $uploadDir . basename($_FILES['imageMenu']["name"]);
+        $arrayExtentionImag=array('png','jpg','jpge','jpeg','gif','svg');
+        $extention=pathinfo( $newPathImage,PATHINFO_EXTENSION);//retourn extention de image 
+        if(in_array(strtolower($extention),$arrayExtentionImag)){
+            move_uploaded_file($_FILES['imageMenu']["tmp_name"],$newPathImage);
+             $requteAjoutMenu="INSERT INTO menu(titre,description,image) VALUES(?,?,?);";
+             $stmt=mysqli_prepare($conn,$requteAjoutMenu);
+             mysqli_stmt_bind_param($stmt,"sss",$titreMenu,$descriptionMenu,$newPathImage);
+             mysqli_stmt_execute($stmt);
+             $idMenu=mysqli_insert_id($conn);
+             for($i=0;$i<$tailleId;$i++)
+             {
+                    // echo $_POST['idPlat'][$i]." ";
+                $reqeuteInsertIntoPlat_Menu="INSERT INTO menu_palt VALUES(?,?);";
+                $stmt=mysqli_prepare($conn,$reqeuteInsertIntoPlat_Menu);
+                mysqli_stmt_bind_param($stmt,"ii",$idMenu,$_POST['idPlat'][$i]);
+                mysqli_stmt_execute($stmt);
+             }
+        }else{
+            echo "c'est pas une image";
+        }
+    } else {
+        echo "Aucun fichier téléchargé.";
+    }
+
 
 
 }
@@ -424,6 +455,10 @@ if (isset($_POST['ajoutMenu'])){
                 </div> 
 
                 </div>
+               <div  id="divPourInputId">
+                
+               </div>
+                
                 
            <div class="flex justify-end">
             <a id="bteFormDynamique" class="cursor-pointer"><i class="ri-file-add-fill"></i></a>
@@ -547,9 +582,12 @@ if (isset($_POST['ajoutMenu'])){
         document.querySelector('#divPourLesNouveauxChamps').addEventListener('change', (event) => {
     if (event.target && event.target.classList.contains('select')) {
         const selectedOption = event.target.options[event.target.selectedIndex];
-    
+        let inputId =document.createElement('input');
+          inputId.name="idPlat[]";
+         inputId.value=selectedOption.id;
+         document.querySelector('#divPourInputId').appendChild(inputId);
     // Afficher l'ID de l'option sélectionnée
-    console.log(selectedOption.id);
+    // console.log(selectedOption.id);
     }
 });
       
