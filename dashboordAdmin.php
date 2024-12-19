@@ -45,7 +45,7 @@ include('db.php');
 
 if (isset($_POST['ajoutPlat'])) {
  
-    $namePlat = trim(htmlspecialchars($_POST['nomPlat']));
+    $namePlat   = trim(htmlspecialchars($_POST['nomPlat']));
     $descriptionPlat = trim(htmlspecialchars($_POST['descriptionPlat']));
     $categoriePlat = htmlspecialchars($_POST['categoriePlat']);
     $prixPlat = trim(htmlspecialchars($_POST['prixPlat'])); 
