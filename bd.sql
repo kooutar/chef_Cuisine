@@ -25,3 +25,6 @@ ADD constraint primary key(id_menu,id_plat);
 
 alter table plate
 add COLUMN nomPlat varchar(55);
+
+
+insert into table 
