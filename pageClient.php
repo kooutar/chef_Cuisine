@@ -69,7 +69,7 @@
 
     
       <?php
-      include('db.php');
+      // include('db.php');
        $allMenu ="SELECT * FROM menu ";
       //  $stmt=mysqli_prepare($conn, $allMenu);
       //  $result=mysqli_stmt_execute($stmt);
@@ -79,7 +79,7 @@
           echo " 
               <div
     class='flex flex-col rounded-lg bg-white text-surface shadow-secondary-1 dark:bg-surface-dark dark:text-white sm:shrink-0 sm:grow sm:basis-0 sm:rounded-e-none'>
-    <a href='#!'>
+    
           <img
         class='rounded-t-lg sm:rounded-tr-none'
         src={$row['image']}
@@ -90,7 +90,7 @@
       <p class='mb-4 text-base'>
        {$row['description']}
       </p>
-      <button id='bteEditMenu'class='btn w-full'>savoir plus</button>
+    <button onclick='window.location.href = `platMenu.php?idmenu={$row['id_menu']}`'  class='btn w-full'>savoir plus</button>
     </div>
      </div>
     ";
@@ -154,8 +154,17 @@ document.querySelector('#bteRetourMenu').addEventListener('click',()=>{
  }else{
   section.classList.remove('hidden');
  }
- })
-  
+ }) 
+})
+
+
+document.querySelectorAll('.btn').forEach(button=>{
+  button.addEventListener('click',()=>{
+    console.log(button.id);
+    // let menuId=button.id;
+    // window.location.href = `platMenu.php?idmenu=${menuId}`;
+    document.cookie="id_menu="+button.id;
+  })
 })
     </script>
 </body>
