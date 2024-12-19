@@ -1,3 +1,10 @@
+<?php 
+// session_start();
+// if (!isset($_SESSION['user_id']) || $_SESSION['id_role'] != 1) {
+//     header("Location: login.php");
+//     exit();
+// }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

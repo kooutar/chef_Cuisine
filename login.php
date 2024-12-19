@@ -4,20 +4,28 @@ session_start();
 include('db.php'); 
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $mail =trim(htmlspecialchars($_POST['email']));
+
     $password = trim(htmlspecialchars($_POST['password']));
     $userWithMail = "SELECT * FROM USER WHERE email=?";
     $stmt = mysqli_prepare($conn, $userWithMail);
     mysqli_stmt_bind_param($stmt, "s", $mail);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
+   
     if (mysqli_num_rows($result) > 0) {
         $row = mysqli_fetch_assoc($result);
+         
         if (password_verify($password, $row['password'])) {
+            
             if($row['id_role']==1)
             {
                 $_SESSION["id_user"]=$row['id_user'];
+                // $_SESSION["id_role"] =1;
+          
                 header('Location: pageClient.php');
             }else{
+           
+                // $_SESSION['id_role'] =2;
                 header('Location: dashboordAdmin.php'); 
             }
            

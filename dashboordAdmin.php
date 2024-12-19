@@ -1,3 +1,10 @@
+<?php 
+// session_start();
+// if (!isset($_SESSION['user_id']) || $_SESSION['id_role'] != 2) {
+//     header("Location: login.php");
+//     exit();
+// }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -44,7 +51,7 @@
 include('db.php');
 
 if (isset($_POST['ajoutPlat'])) {
- 
+
     $namePlat = trim(htmlspecialchars($_POST['nomPlat']));
     $descriptionPlat = trim(htmlspecialchars($_POST['descriptionPlat']));
     $categoriePlat = htmlspecialchars($_POST['categoriePlat']);
@@ -53,7 +60,7 @@ if (isset($_POST['ajoutPlat'])) {
     if (isset($_FILES["pathImage"]) && !empty($_FILES["pathImage"]["name"])) {
         echo $_FILES["pathImage"]["name"]."  ".basename($_FILES["pathImage"]["name"])."<br>";
         $newPathImage = $uploadDir . basename($_FILES["pathImage"]["name"]);
-        $arrayExtentionImag=array('png','jpg','jpge','gif','svg');
+        $arrayExtentionImag=array('png','jpg','jpge','jpeg','gif','svg');
         $extention=pathinfo( $newPathImage,PATHINFO_EXTENSION);//retourn extention de image 
         if(in_array(strtolower($extention),$arrayExtentionImag)){
             move_uploaded_file($_FILES["pathImage"]["tmp_name"],$newPathImage);
@@ -67,8 +74,20 @@ if (isset($_POST['ajoutPlat'])) {
     } else {
         echo "Aucun fichier téléchargé.";
     }
-    // $newPathImage=$uploadDir . basename($_FILES["pathImage"]["name"]);
-    // echo pathinfo( $newPathImage,PATHINFO_EXTENSION);
+}
+if (isset($_POST['ajoutMenu'])){
+    $titreMenu=trim(htmlspecialchars($_POST['titreMenu']));
+    $descriptionMenu=trim(htmlspecialchars($_POST['descriptionMenu']));
+    $allPlat=$_POST['plat'];
+    $taille=count($allPlat);
+    echo $taille ."<br>";
+    for($i=0;$i<$taille;$i++)
+    {
+           echo $_POST['plat'][$i]." ";
+    }
+    $imageMenu=$_FILES['imageMenu'];
+
+
 }
 ?>
 
@@ -345,8 +364,8 @@ if (isset($_POST['ajoutPlat'])) {
                     <label for="nom" class="block text-sm font-medium text-gray-600 mb-2">Titre Menu</label>
                     <input 
                         type="text" 
-                        id="nom" 
-                        name="titre" 
+                        id="titre" 
+                        name="titreMenu" 
                         placeholder="Entrez le nom du plat"
                         class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                         required
@@ -359,7 +378,7 @@ if (isset($_POST['ajoutPlat'])) {
                     <input 
                         type="file" 
                         id="nom" 
-                        name="image" 
+                        name="imageMenu" 
                         placeholder="Entrez le nom du plat"
                         class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                         required
@@ -371,7 +390,7 @@ if (isset($_POST['ajoutPlat'])) {
                     <label for="description" class="block text-sm font-medium text-gray-600 mb-2">Description</label>
                     <textarea 
                         id="description" 
-                        name="description" 
+                        name="descriptionMenu" 
                         rows="4" 
                         placeholder="Ajoutez une description du plat"
                         class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
@@ -381,27 +400,28 @@ if (isset($_POST['ajoutPlat'])) {
 
                 <!-- Catégorie -->
                  
-                 <div>
+                
+                <div id="divPourLesNouveauxChamps" class="flex flex-col gap-2">
+                <div>
                     <label for="categorie" class="block text-sm font-medium text-gray-600 mb-2">plat</label>
                     <select 
                         id="categorie" 
-                        name="categorie"
-                        class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        name="plat[]"
+                        class="select w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                         required
                     >
-                        <option value="" disabled selected>Choisissez une catégorie</option>
+                        <option value="" disabled selected>Choisissez un Plat</option>
                         <?php 
                           $requetAllPlat="SELECT * FROM plate;";
                           $result=mysqli_query($conn,$requetAllPlat);
                           while($row=mysqli_fetch_assoc($result)){
-                            echo "<option value='{$row['nomPlat']}'>{$row['nomPlat']}</option>";
+                            echo "<option id='{$row['id_plat']}' value='{$row['nomPlat']}'>{$row['nomPlat']}</option>";
                           }
 
                         ?>
                         
                     </select>
                 </div> 
-                <div id="divPourLesNouveauxChamps">
 
                 </div>
                 
@@ -414,6 +434,7 @@ if (isset($_POST['ajoutPlat'])) {
                 <div class="text-center">
                     <button 
                         type="submit" 
+                        name ="ajoutMenu"
                         class="w-full md:w-1/2 bg-[#e38e10] text-white font-semibold py-2 rounded-lg hover:bg-[#d1902f] transition duration-300"
                     >
                         Ajouter le Menu
@@ -499,24 +520,42 @@ if (isset($_POST['ajoutPlat'])) {
 
         })
         document.querySelector('#bteFormDynamique').addEventListener('click',()=>{
-            document.querySelector('#divPourLesNouveauxChamps').innerHTML+=`
-              <div>
-                    <label for="categorie" class="block text-sm font-medium text-gray-600 mb-2">plat</label>
-                    <select 
-                        id="categorie" 
-                        name="categorie"
-                        class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required
-                    >
-                        <option value="" disabled selected>Choisissez une catégorie</option>
-                        <option value="plat_principal">Plat Principal</option>
-                        <option value="dessert">Dessert</option>
-                        <option value="entree">Entrée</option>
-                    </select>
-                </div> 
-            `
+            let newSelect=document.createElement('select');
+            newSelect.name="plat[]";
+            newSelect.classList.add("select","w-full","px-4","py-2","border","rounded-lg","focus:outline-none","focus:ring-2","focus:ring-blue-500")
+            newSelect.innerHTML=`
+               <option value="" disabled selected>Choisissez un Plat</option>
+                         <?php 
+                          $requetAllPlat="SELECT * FROM plate;";
+                          $result=mysqli_query($conn,$requetAllPlat);
+                          while($row=mysqli_fetch_assoc($result)){
+                            echo "<option id='{$row['id_plat']}' value='{$row['nomPlat']}'>{$row['nomPlat']}</option>";
+                          }
 
+                        ?>
+            `
+            document.querySelector('#divPourLesNouveauxChamps').appendChild(newSelect);
+             
+           
         })
+        // const select=document.querySelectorAll('.select');
+        // select.forEach(select=>{
+        //     select.addEventListener('change',()=>{
+        //     console.log(select.value);
+        //     })
+        // })
+        document.querySelector('#divPourLesNouveauxChamps').addEventListener('change', (event) => {
+    if (event.target && event.target.classList.contains('select')) {
+        const selectedOption = event.target.options[event.target.selectedIndex];
+    
+    // Afficher l'ID de l'option sélectionnée
+    console.log(selectedOption.id);
+    }
+});
+      
+            
+      
+        
         
     </script>
 </body>
