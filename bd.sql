@@ -27,4 +27,3 @@ alter table plate
 add COLUMN nomPlat varchar(55);
 
 
-insert into table 

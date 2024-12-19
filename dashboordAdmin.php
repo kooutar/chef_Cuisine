@@ -81,13 +81,7 @@ if (isset($_POST['ajoutMenu'])){
     $allPlat=$_POST['plat'];
     $allplatId=$_POST['idPlat'];
     $tailleId=count($allplatId);
-    $taille=count($allPlat);
     echo $tailleId."<br>"; 
-    echo $taille ."<br>";
-    for($i=0;$i<$tailleId;$i++)
-    {
-           echo $_POST['idPlat'][$i]." ";
-    }
     // $imageMenu=$_FILES['imageMenu'];
     $uploadDir = 'uploads/';
     if (isset($_FILES['imageMenu']) && !empty($_FILES['imageMenu']["name"])) {
@@ -573,21 +567,16 @@ if (isset($_POST['ajoutMenu'])){
              
            
         })
-        // const select=document.querySelectorAll('.select');
-        // select.forEach(select=>{
-        //     select.addEventListener('change',()=>{
-        //     console.log(select.value);
-        //     })
-        // })
+      
         document.querySelector('#divPourLesNouveauxChamps').addEventListener('change', (event) => {
     if (event.target && event.target.classList.contains('select')) {
         const selectedOption = event.target.options[event.target.selectedIndex];
         let inputId =document.createElement('input');
           inputId.name="idPlat[]";
          inputId.value=selectedOption.id;
+         inputId.classList.add("invisible");
          document.querySelector('#divPourInputId').appendChild(inputId);
-    // Afficher l'ID de l'option sélectionnée
-    // console.log(selectedOption.id);
+   
     }
 });
       
