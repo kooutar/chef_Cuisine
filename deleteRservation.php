@@ -1,14 +1,20 @@
-<?php 
-
-include 'db.php'; // Assurez-vous d'inclure votre connexion MySQL
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Document</title>
+</head>
+<body>
+    <?php
+include 'db.php'; 
 
 if (isset($_POST['deleteReserve'])) {
-    // Récupérer les données du formulaire
+
     $id_user = intval($_POST['id_user']);
     $id_menu = intval($_POST['id_menu']);
   
-
-    // Préparer la requête de mise à jour
     $updateQuery = " delete from reservation where id_menu=? and id_user=?;";
 
     $stmt = mysqli_prepare($conn, $updateQuery);
@@ -23,10 +29,17 @@ if (isset($_POST['deleteReserve'])) {
     } else {
         echo "Erreur dans la préparation de la requête : " . mysqli_error($conn);
     }
-}
+} 
+ 
+
+
 
 // Redirection (optionnelle)
 header("Location: pageClient.php"); // Remplacez par le chemin de votre page
 exit;
 
 ?>
+</body>
+</html>
+<?php 
+

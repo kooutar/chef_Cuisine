@@ -138,6 +138,11 @@
                                             <input type='hidden' name='id_menu' value='{$row['id_menu']}'>
                                             <button type='submit' name='deleteReserve' class='bg-green-500 text-white px-3 py-1 rounded'>annuller</button>
                                         </form>
+                                         <form method='POST' style='display:inline;' action=''>
+                                            <input type='hidden' name='id_user' value='{$row['id_user']}'>
+                                            <input type='hidden' name='id_menu' value='{$row['id_menu']}'>
+                                            <button type='submit' name='modifierReserve' class='bg-green-500 text-white px-3 py-1 rounded'>modifier</button>
+                                        </form>
                                     </td>
                                     </tr>
                                  ";
@@ -147,9 +152,79 @@
                        
                     </tbody>
                 </table>
-
         </div>
 
+        
+<?php 
+
+if (isset($_POST['modifierReserve'])) {
+    $id_user = intval($_POST['id_user']);
+    $id_menu = intval($_POST['id_menu']);
+
+    $requte = "SELECT * FROM reservation WHERE id_user=? AND id_menu=?";
+    $stmt = mysqli_prepare($conn, $requte);
+
+    if (!$stmt) {
+        die("Échec de la préparation de la requête : " . mysqli_error($conn));
+    }
+
+    mysqli_stmt_bind_param($stmt, 'ii', $id_user, $id_menu);
+    $bool = mysqli_stmt_execute($stmt);
+
+    if (!$bool) {
+        die("Échec de l'exécution de la requête : " . mysqli_error($conn));
+    }
+
+    $result = mysqli_stmt_get_result($stmt);
+    $row = mysqli_fetch_assoc($result);
+
+    if (!$row) {
+        die("Aucune donnée trouvée pour cet utilisateur et ce menu.");
+    }
+
+    echo "
+    <div id='modaleInscription' class='flex justify-center items-center bg-black/50 fixed z-50 w-full h-full'>
+        <form class='p-6 bg-white w-[350px] md:w-1/2' action='' method='POST'>
+            <div class='flex items-start justify-between md:p-5 border-b'>
+                <h3 class='text-gray-900 text-sm md:text-xl lg:text-2xl font-semibold'>Reserver</h3>
+                <button id='closeBteForListPlayers' type='button' class='closeBte text-gray-400 hover:bg-gray-200 rounded-lg p-5'>&times;</button>
+            </div>
+            <div class='-mx-3 flex flex-wrap'>
+                <div class='w-full px-3 sm:w-1/2'>
+                    <div class='mb-5'>
+                        <label class='mb-3 block text-base font-medium text-[#07074D]'>Date de réservation</label>
+                        <input type='date' name='date' id='date'
+                            class='w-full rounded-md border border-[#e0e0e0] bg-white md:py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md'
+                            value=\"{$row['dateReservation']}\" />
+                    </div>
+                </div>
+                <div class='w-full px-3 sm:w-1/2'>
+                    <div class='mb-5'>
+                        <label class='mb-3 block text-base font-medium text-[#07074D]'>Heure de réservation</label>
+                        <input type='time' name='time' id='time'
+                            class='w-full rounded-md border border-[#e0e0e0] bg-white md:py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md'
+                            value=\"{$row['timereservation']}\" />
+                    </div>
+                </div>
+            </div>
+            <div class='-mx-3 flex flex-wrap'>
+                <div class='w-full px-3 sm:w-1/2'>
+                    <div class='mb-5'>
+                        <label class='mb-3 block text-base font-medium text-[#07074D]'>Nombre de places</label>
+                        <input type='number' name='numberplace' id='number'
+                            class='w-full rounded-md border border-[#e0e0e0] bg-white md:py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md'
+                            value=\"{$row['nbrPersonne']}\" />
+                    </div>
+                </div>
+            </div>
+            <div>
+                <button id='bteReserver' class='btn'>Reserver</button>
+            </div>
+        </form> 
+    </div>";
+}
+
+?>
        
      </main>
     </section>
@@ -189,6 +264,16 @@ document.querySelectorAll('.savoir').forEach(button=>{
 
   })
 })
+
+
+        document.querySelector('#bteAfficheModale').addEventListener('click',()=>{
+           document.querySelector('#modaleInscription').classList.remove('hidden')
+            
+        })
+        document.querySelector('#closeBteForListPlayers').addEventListener('click',()=>{
+        document.querySelector('#modaleInscription').classList.add('hidden');
+    })
     </script>
+
 </body>
 </html>
