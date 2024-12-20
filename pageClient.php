@@ -5,6 +5,9 @@
 //     exit();
 // }
 ?>
+<?php 
+   session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,12 +36,15 @@
 
 </style>
 <body style="background-color:bisque;">
+     <!--  modale affiche les plat de  -->
+
+    
     <section class="md:m-6 p-2" style="background-color:whitesmoke;">
      <nav class="flex justify-around">
       <img src="img/logo.png" alt="" srcset="" class="w-16">
       <p class="mb-2 text-xl font-medium leading-tight">
       <?php 
-      session_start();
+   
        include('db.php');
         $requetRecupereName="SELECT * FROM USER where id_user=?";
         $stmt=mysqli_prepare($conn,$requetRecupereName);
@@ -69,10 +75,7 @@
 
     
       <?php
-      // include('db.php');
        $allMenu ="SELECT * FROM menu ";
-      //  $stmt=mysqli_prepare($conn, $allMenu);
-      //  $result=mysqli_stmt_execute($stmt);
       $result=mysqli_query($conn,$allMenu );
        while($row=mysqli_fetch_assoc($result))
        {
@@ -90,7 +93,7 @@
       <p class='mb-4 text-base'>
        {$row['description']}
       </p>
-    <button onclick='window.location.href = `platMenu.php?idmenu={$row['id_menu']}`'  class='btn w-full'>savoir plus</button>
+    <button   id='{$row['id_menu']}'  class='savoir btn w-full'>savoir plus</button>
     </div>
      </div>
     ";
@@ -106,32 +109,52 @@
                     <thead>
                         <tr class="bg-gray-200 text-gray-600">
                             <th class="py-3 px-4 font-medium uppercase">Nom Menu</th>
-                            <th class="py-3 px-4 font-medium uppercase">Mail User</th>
-                            <th class="py-3 px-4 font-medium uppercase">Date de réservation</th>
-                            <th class="py-3 px-4 font-medium uppercase">Heure</th>
-                            <th class="py-3 px-4 font-medium uppercase">Nombre de personnes</th>
+                            <th class="py-3 px-4 font-medium uppercase">date de resrevationr</th>
+                            <th class="py-3 px-4 font-medium uppercase">time de réservation</th>
+                            
                             <th class="py-3 px-4 font-medium uppercase">Statut</th>
                             <th class="py-3 px-4 font-medium uppercase">Edit/Suppression</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="hover:bg-gray-100">
-                            <td class="py-3 px-4 text-gray-700">{$client['id_client']}</td>
-                            <td class="py-3 px-4 text-gray-700">{$client['nom']}</td>
-                            <td class="py-3 px-4 text-gray-700">{$client['pernom']}</td>
-                            <td class="py-3 px-4 text-gray-700">{$client['email']}</td>
-                            <td class="py-3 px-4 text-gray-700">{$client['telephone']}</td>
-                            <td class="py-3 px-4 text-gray-700">{$client['adresse']}</td>
-                            <td class="py-3 px-4 text-gray-700">{$client['date_naissance']}</td>
-                        </tr>
+                        
+                            <?php 
+                               $requte="SELECT r.* ,m.titre from reservation r INNER JOIN menu m ON r.id_menu=m.id_menu WHERE id_user=?";
+                               $stmt=mysqli_prepare($conn,$requte);
+                               mysqli_stmt_bind_param($stmt,"i",$_SESSION['id_user']);
+                               mysqli_stmt_execute($stmt);
+                               $result=mysqli_stmt_get_result($stmt);
+                               while($row=mysqli_fetch_assoc($result))
+                               {
+                                 echo"
+                                 <tr class='hover:bg-gray-100'>
+                                    <td class='py-3 px-4 text-gray-700'>{$row['titre']}</td>
+                                    <td class='py-3 px-4 text-gray-700'>{$row['dateReservation']}</td>
+                                    <td class='py-3 px-4 text-gray-700'>{$row['timereservation']}</td>
+                                    <td class='py-3 px-4 text-gray-700'>{$row['status']}</td>
+                                    <td class='py-3 px-4 text-gray-700'>
+                                       <form method='POST' style='display:inline;' action='deleteRservation.php'>
+                                            <input type='hidden' name='id_user' value='{$row['id_user']}'>
+                                            <input type='hidden' name='id_menu' value='{$row['id_menu']}'>
+                                            <button type='submit' name='deleteReserve' class='bg-green-500 text-white px-3 py-1 rounded'>annuller</button>
+                                        </form>
+                                    </td>
+                                    </tr>
+                                 ";
+                               }
+                            ?>
+                          
+                       
                     </tbody>
                 </table>
 
         </div>
 
-        
+       
      </main>
     </section>
+
+    
     <script>
 const allsection=document.querySelectorAll('.section')
 document.querySelector('#bteHidtorique').addEventListener('click',()=>{
@@ -158,12 +181,12 @@ document.querySelector('#bteRetourMenu').addEventListener('click',()=>{
 })
 
 
-document.querySelectorAll('.btn').forEach(button=>{
+document.querySelectorAll('.savoir').forEach(button=>{
   button.addEventListener('click',()=>{
     console.log(button.id);
-    // let menuId=button.id;
-    // window.location.href = `platMenu.php?idmenu=${menuId}`;
     document.cookie="id_menu="+button.id;
+     window.location.href = `platMenu.php`;
+
   })
 })
     </script>

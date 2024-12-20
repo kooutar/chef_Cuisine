@@ -117,29 +117,90 @@ if (isset($_POST['ajoutMenu'])){
 ?>
 
 <body class="bg-gray-100 font-sans">
+
+
     <div class="flex flex-col">
         <!-- Partie Statistique -->
         <main class="p-6">
             <div id="partieStatistique" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 md:pl-12">
                 <div id="statiqueCleint" class="w-full sm:w-40 h-20 bg-green-500 text-white rounded-lg shadow-md flex justify-center items-center">
+                <p class="font-medium text-sm uppercase tracking-wider">
+    <?php
+    include('db.php');
+    // Requête corrigée
+    $requetreservationAttente = "SELECT COUNT(*) as total FROM reservation WHERE status = 'en attente';";
+    $nbrreservationAttente = mysqli_query($conn, $requetreservationAttente);
+
+    if ($nbrreservationAttente) {
+        $result = mysqli_fetch_assoc($nbrreservationAttente);
+        // Vérifiez si le résultat n'est pas nul et affichez-le
+        if ($result && $result['total'] > 0) {
+            echo $result['total'] . " réservations en attente";
+        } else {
+            echo "0 réservation en attente.";
+        }
+    } else {
+        // Affiche l'erreur SQL si la requête échoue
+        echo "Erreur dans la requête SQL : " . mysqli_error($conn);
+    }
+    ?>
+</p>
+
+                </div>
+                <div id="statiqueReservationAccepter" class="w-full sm:w-40 h-20 p-6 bg-yellow-500 text-white rounded-lg shadow-md flex justify-center items-center">
                     <p class="font-medium text-sm uppercase tracking-wider">
-                        <?php
-                         include('db.php');
+                    <?php
                           $requetAllClient="SELECT count(*) FROM user;";
                           $nbrClient=mysqli_query($conn,$requetAllClient);
                           $result=mysqli_fetch_assoc($nbrClient);
                           echo $result['count(*)'];
-                        ?> 
-                        client</p>
-                </div>
-                <div id="statiqueReservationAccepter" class="w-full sm:w-40 h-20 p-6 bg-yellow-500 text-white rounded-lg shadow-md flex justify-center items-center">
-                    <p class="font-medium text-sm uppercase tracking-wider">0 Reservation acceptée</p>
+                        ?>     
+                   clients </p>
                 </div>
                 <div id="statiqtiqueresevationRefuser" class="w-full sm:w-40 h-20 p-6 bg-blue-500 text-white rounded-lg shadow-md flex justify-center items-center">
-                    <p class="font-medium text-sm uppercase tracking-wider">0 Reservation refusée</p>
+                    <p class="font-medium text-sm uppercase tracking-wider"> 
+                        <?php
+    include('db.php');
+  
+    $requetreservationAttente = "SELECT COUNT(*) as total FROM reservation WHERE status = 'accepter';";
+    $nbrreservationAttente = mysqli_query($conn, $requetreservationAttente);
+
+    if ($nbrreservationAttente) {
+        $result = mysqli_fetch_assoc($nbrreservationAttente);
+      
+        if ($result && $result['total'] > 0) {
+            echo $result['total'] . " réservations acceptee";
+        } else {
+            echo "0 réservation en acceptee.";
+        }
+    } else {
+        echo "Erreur dans la requête SQL : " . mysqli_error($conn);
+    }
+    ?>
+    </p>
                 </div>
                 <div id="statiqtiqueresevationEnAttent" class="w-full sm:w-40 h-20  bg-red-500 text-white rounded-lg shadow-md flex justify-center items-center">
-                    <p class="font-medium text-sm uppercase tracking-wider">0 En attente</p>
+                    <p class="font-medium text-sm uppercase tracking-wider">
+                    <?php
+    include('db.php');
+    // Requête corrigée
+    $requetreservationAttente = "SELECT COUNT(*) as total FROM reservation WHERE status = 'refuser';";
+    $nbrreservationAttente = mysqli_query($conn, $requetreservationAttente);
+
+    if ($nbrreservationAttente) {
+        $result = mysqli_fetch_assoc($nbrreservationAttente);
+        // Vérifiez si le résultat n'est pas nul et affichez-le
+        if ($result && $result['total'] > 0) {
+            echo $result['total'] . " réservations refusee";
+        } else {
+            echo "0 réservation en refusee.";
+        }
+    } else {
+        // Affiche l'erreur SQL si la requête échoue
+        echo "Erreur dans la requête SQL : " . mysqli_error($conn);
+    }
+    ?>
+                    </p>
                 </div>
             </div>
         </main>
@@ -165,25 +226,51 @@ if (isset($_POST['ajoutMenu'])){
                 <table id="tableClients" class="table-auto min-w-max w-full bg-gray-50 border border-gray-300 rounded-lg shadow-md">
                     <thead>
                         <tr class="bg-gray-200 text-gray-600">
-                            <th class="py-3 px-4 font-medium uppercase">Nom Menu</th>
-                            <th class="py-3 px-4 font-medium uppercase">Mail User</th>
-                            <th class="py-3 px-4 font-medium uppercase">Date de réservation</th>
-                            <th class="py-3 px-4 font-medium uppercase">Heure</th>
-                            <th class="py-3 px-4 font-medium uppercase">Nombre de personnes</th>
-                            <th class="py-3 px-4 font-medium uppercase">Statut</th>
-                            <th class="py-3 px-4 font-medium uppercase">Edit/Suppression</th>
+                        
+                            <th class="py-3 px-4 font-medium uppercase">Nom client</th>
+                            <th class="py-3 px-4 font-medium uppercase">date Reservation</th>
+                            <th class="py-3 px-4 font-medium uppercase">Time de reservation</th>
+                            <th class="py-3 px-4 font-medium uppercase">nombre Presonne</th>
+                            <th class="py-3 px-4 font-medium uppercase">adresse client</th>
+                            <th class="py-3 px-4 font-medium uppercase">id menu reserve</th>
+                            <th class="py-3 px-4 font-medium uppercase">reponnse</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="hover:bg-gray-100">
-                            <td class="py-3 px-4 text-gray-700">{$client['id_client']}</td>
-                            <td class="py-3 px-4 text-gray-700">{$client['nom']}</td>
-                            <td class="py-3 px-4 text-gray-700">{$client['pernom']}</td>
-                            <td class="py-3 px-4 text-gray-700">{$client['email']}</td>
-                            <td class="py-3 px-4 text-gray-700">{$client['telephone']}</td>
-                            <td class="py-3 px-4 text-gray-700">{$client['adresse']}</td>
-                            <td class="py-3 px-4 text-gray-700">{$client['date_naissance']}</td>
-                        </tr>
+                        <?php 
+                         $requetreservationAttente="SELECT  u.* , r.* FROM user u INNER JOIN reservation r ON u.id_user = r.id_user WHERE r.status = 'en attente';";
+                         $nbrreservationAttente=mysqli_query($conn,$requetreservationAttente);
+                         while($row=mysqli_fetch_assoc($nbrreservationAttente)){
+                            echo "<tr class='hover:bg-gray-100'>
+                          <td class='py-3 px-4 text-gray-700'>{$row['nom']}</td>
+                            <td class='py-3 px-4 text-gray-700'>{$row['dateReservation']}</td>
+                            <td class='py-3 px-4 text-gray-700'>{$row['timereservation']}</td>
+                            <td class='py-3 px-4 text-gray-700'>{$row['nbrPersonne']}</td>
+                            <td class='py-3 px-4 text-gray-700'>{$row['adresse']}</td>
+                             <td class='py-3 px-4 text-gray-700'>{$row['id_menu']}</td>
+                             <td class='py-3 px-4 text-gray-700'>
+                               <form method='POST' style='display:inline;' action='update_reservation.php'>
+                <input type='hidden' name='id_user' value='{$row['id_user']}'>
+                <input type='hidden' name='id_menu' value='{$row['id_menu']}'>
+                <input type='hidden' name='status' value='accepter'>
+                <button type='submit' class='bg-green-500 text-white px-3 py-1 rounded'>Acceptee</button>
+            </form>
+            <!-- Formulaire pour refuser -->
+            <form method='POST' style='display:inline;' action='update_reservation.php'>
+                <input type='hidden' name='id_user' value='{$row['id_user']}'>
+                <input type='hidden' name='id_menu' value='{$row['id_menu']}'>
+                <input type='hidden' name='status' value='refuser'>
+                <button type='submit' class='bg-red-500 text-white px-3 py-1 rounded'>Refusee</button>
+            </form>
+                             </td>
+                           
+                        </tr>";
+
+                         }
+                         
+                        
+
+                        ?>
                     </tbody>
                 </table>
             </div>
@@ -290,26 +377,37 @@ if (isset($_POST['ajoutMenu'])){
                 <h6 class="font-medium text-lg uppercase tracking-wider mb-4 text-gray-700">Réservation Acceptées</h6>
                 <table id="tableClients" class="table-auto min-w-max w-full bg-gray-50 border border-gray-300 rounded-lg shadow-md">
                     <thead>
-                        <tr class="bg-gray-200 text-gray-600">
-                            <th class="py-3 px-4 font-medium uppercase">Nom Menu</th>
-                            <th class="py-3 px-4 font-medium uppercase">Mail User</th>
-                            <th class="py-3 px-4 font-medium uppercase">Date de réservation</th>
-                            <th class="py-3 px-4 font-medium uppercase">Heure</th>
-                            <th class="py-3 px-4 font-medium uppercase">Nombre de personnes</th>
-                            <th class="py-3 px-4 font-medium uppercase">Statut</th>
-                            <th class="py-3 px-4 font-medium uppercase">Edit/Suppression</th>
+                    <tr class="bg-gray-200 text-gray-600">
+                            <th class="py-3 px-4 font-medium uppercase">Nom client</th>
+                            <th class="py-3 px-4 font-medium uppercase">date Reservation</th>
+                            <th class="py-3 px-4 font-medium uppercase">Time de reservation</th>
+                            <th class="py-3 px-4 font-medium uppercase">nombre Presonne</th>
+                            <th class="py-3 px-4 font-medium uppercase">adresse client</th>
+                            <th class="py-3 px-4 font-medium uppercase">id menu reserve</th>
+                            
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="hover:bg-gray-100">
-                            <td class="py-3 px-4 text-gray-700">{$client['id_client']}</td>
-                            <td class="py-3 px-4 text-gray-700">{$client['nom']}</td>
-                            <td class="py-3 px-4 text-gray-700">{$client['pernom']}</td>
-                            <td class="py-3 px-4 text-gray-700">{$client['email']}</td>
-                            <td class="py-3 px-4 text-gray-700">{$client['telephone']}</td>
-                            <td class="py-3 px-4 text-gray-700">{$client['adresse']}</td>
-                            <td class="py-3 px-4 text-gray-700">{$client['date_naissance']}</td>
-                        </tr>
+                    <?php 
+                         $requetreservationAttente="SELECT  u.* , r.* FROM user u INNER JOIN reservation r ON u.id_user = r.id_user WHERE r.status = 'accepter' AND r. dateReservation >= CURDATE() ORDER BY dateReservation ASC;";
+                         $nbrreservationAttente=mysqli_query($conn,$requetreservationAttente);
+                         while($row=mysqli_fetch_assoc($nbrreservationAttente)){
+                            echo "<tr class='hover:bg-gray-100'>
+                            <td class='py-3 px-4 text-gray-700'>{$row['nom']}</td>
+                            <td class='py-3 px-4 text-gray-700'>{$row['dateReservation']}</td>
+                            <td class='py-3 px-4 text-gray-700'>{$row['timereservation']}</td>
+                            <td class='py-3 px-4 text-gray-700'>{$row['nbrPersonne']}</td>
+                            <td class='py-3 px-4 text-gray-700'>{$row['adresse']}</td>
+                             <td class='py-3 px-4 text-gray-700'>{$row['id_menu']}</td>
+                            
+                           
+                        </tr>";
+
+                         }
+                         
+                        
+
+                        ?>
                     </tbody>
                 </table>
             </div>
@@ -320,26 +418,35 @@ if (isset($_POST['ajoutMenu'])){
                 <h6 class="font-medium text-lg uppercase tracking-wider mb-4 text-gray-700">Réservation refusée</h6>
                 <table id="tableClients" class="table-auto min-w-max w-full bg-gray-50 border border-gray-300 rounded-lg shadow-md">
                     <thead>
-                        <tr class="bg-gray-200 text-gray-600">
-                            <th class="py-3 px-4 font-medium uppercase">Nom Menu</th>
-                            <th class="py-3 px-4 font-medium uppercase">Mail User</th>
-                            <th class="py-3 px-4 font-medium uppercase">Date de réservation</th>
-                            <th class="py-3 px-4 font-medium uppercase">Heure</th>
-                            <th class="py-3 px-4 font-medium uppercase">Nombre de personnes</th>
-                            <th class="py-3 px-4 font-medium uppercase">Statut</th>
-                            <th class="py-3 px-4 font-medium uppercase">Edit/Suppression</th>
+                    <tr class="bg-gray-200 text-gray-600">
+                            <th class="py-3 px-4 font-medium uppercase">Nom client</th>
+                            <th class="py-3 px-4 font-medium uppercase">date Reservation</th>
+                            <th class="py-3 px-4 font-medium uppercase">Time de reservation</th>
+                            <th class="py-3 px-4 font-medium uppercase">nombre Presonne</th>
+                            <th class="py-3 px-4 font-medium uppercase">adresse client</th>
+                            <th class="py-3 px-4 font-medium uppercase">id menu reserve</th>
+                            
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="hover:bg-gray-100">
-                            <td class="py-3 px-4 text-gray-700">{$client['id_client']}</td>
-                            <td class="py-3 px-4 text-gray-700">{$client['nom']}</td>
-                            <td class="py-3 px-4 text-gray-700">{$client['pernom']}</td>
-                            <td class="py-3 px-4 text-gray-700">{$client['email']}</td>
-                            <td class="py-3 px-4 text-gray-700">{$client['telephone']}</td>
-                            <td class="py-3 px-4 text-gray-700">{$client['adresse']}</td>
-                            <td class="py-3 px-4 text-gray-700">{$client['date_naissance']}</td>
-                        </tr>
+                    <?php 
+                         $requetreservationAttente="SELECT  u.* , r.* FROM user u INNER JOIN reservation r ON u.id_user = r.id_user WHERE r.status = 'refusee';";
+                         $nbrreservationAttente=mysqli_query($conn,$requetreservationAttente);
+                         while($row=mysqli_fetch_assoc($nbrreservationAttente)){
+                            echo "<tr class='hover:bg-gray-100'>
+                            <td class='py-3 px-4 text-gray-700'>{$row['nom']}</td>
+                            <td class='py-3 px-4 text-gray-700'>{$row['dateReseravtion']}</td>
+                            <td class='py-3 px-4 text-gray-700'>{$row['timereservation']}</td>
+                            <td class='py-3 px-4 text-gray-700'>{$row['nbrPersonne']}</td>
+                            <td class='py-3 px-4 text-gray-700'>{$row['adresse']}</td>
+                            <td class='py-3 px-4 text-gray-700'>{$row['id_menu']}</td>  
+                        </tr>";
+
+                         }
+                         
+                        
+
+                        ?>
                     </tbody>
                 </table>
             </div>
@@ -360,15 +467,26 @@ if (isset($_POST['ajoutMenu'])){
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="hover:bg-gray-100">
-                            <td class="py-3 px-4 text-gray-700">{$client['id_client']}</td>
-                            <td class="py-3 px-4 text-gray-700">{$client['nom']}</td>
-                            <td class="py-3 px-4 text-gray-700">{$client['pernom']}</td>
-                            <td class="py-3 px-4 text-gray-700">{$client['email']}</td>
-                            <td class="py-3 px-4 text-gray-700">{$client['telephone']}</td>
-                            <td class="py-3 px-4 text-gray-700">{$client['adresse']}</td>
-                            <td class="py-3 px-4 text-gray-700">{$client['date_naissance']}</td>
-                        </tr>
+                    <?php 
+                         $requetreservationAttente="SELECT  * FROM user ";
+                         $nbrreservationAttente=mysqli_query($conn,$requetreservationAttente);
+                         while($row=mysqli_fetch_assoc($nbrreservationAttente)){
+                            echo "<tr class='hover:bg-gray-100'>
+                            <td class='py-3 px-4 text-gray-700'>{$row['nom']}</td>
+                            <td class='py-3 px-4 text-gray-700'>{$row['pernom']}</td>
+                            <td class='py-3 px-4 text-gray-700'>{$row['email']}</td>
+                            <td class='py-3 px-4 text-gray-700'>{$row['telephone']}</td>
+                            <td class='py-3 px-4 text-gray-700'>{$row['adresse']}</td>
+                             
+                            
+                           
+                        </tr>";
+
+                         }
+                         
+                        
+
+                        ?>
                     </tbody>
                 </table>
             </div>
